@@ -1,6 +1,6 @@
 
 {
-    "name": "your-name/laravel-say-logger",
+    "name": "jordan/laravel-say-logger",
     "description": "A Laravel package for logging with macOS say command",
     "type": "library",
     "require": {
