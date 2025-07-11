@@ -87,6 +87,9 @@ class LaravelSayLoggerServiceProvider extends ServiceProvider
         // Set say as default channel if no custom channel is configured
         if (!env('LOG_CHANNEL') && config('logging.default') !== 'say') {
             config(['logging.default' => 'say']);
+            
+            // Log a welcome message that will be spoken
+            \Illuminate\Support\Facades\Log::info('Say Logger installed successfully! Your log messages will now be spoken aloud.');
         }
     }
 }
