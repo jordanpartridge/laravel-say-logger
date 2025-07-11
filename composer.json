@@ -37,6 +37,14 @@
             ]
         }
     },
+    "scripts": {
+        "post-install-cmd": [
+            "JordanPartridge\\LaravelSayLogger\\Installer::install"
+        ],
+        "post-update-cmd": [
+            "JordanPartridge\\LaravelSayLogger\\Installer::install"
+        ]
+    },
     "minimum-stability": "stable",
     "prefer-stable": true
 }
