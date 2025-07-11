@@ -1,22 +1,42 @@
-
 {
-    "name": "jordan/laravel-say-logger",
-    "description": "A Laravel package for logging with macOS say command",
+    "name": "jordanpartridge/laravel-say-logger",
+    "description": "A Laravel package that speaks your log messages using macOS text-to-speech with different voices for different log levels",
     "type": "library",
+    "license": "MIT",
+    "keywords": ["laravel", "logging", "text-to-speech", "macos", "say", "audio", "debugging"],
+    "authors": [
+        {
+            "name": "Jordan Partridge",
+            "email": "jordan@partridge.rocks"
+        }
+    ],
     "require": {
-        "php": "^7.4|^8.0",
-        "illuminate/support": "^8.0|^9.0"
+        "php": "^8.1",
+        "illuminate/support": "^10.0|^11.0|^12.0",
+        "monolog/monolog": "^3.0",
+        "symfony/process": "^6.0|^7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0|^11.0",
+        "orchestra/testbench": "^8.0|^9.0|^10.0"
     },
     "autoload": {
         "psr-4": {
-            "YourName\\LaravelSayLogger\\": "src/"
+            "JordanPartridge\\LaravelSayLogger\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "JordanPartridge\\LaravelSayLogger\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "YourName\\LaravelSayLogger\\LaravelSayLoggerServiceProvider"
+                "JordanPartridge\\LaravelSayLogger\\LaravelSayLoggerServiceProvider"
             ]
         }
-    }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }

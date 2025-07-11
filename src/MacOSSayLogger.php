@@ -1,24 +1,29 @@
-
 <?php
 
-namespace YourName\LaravelSayLogger;
+namespace JordanPartridge\LaravelSayLogger;
 
-use Illuminate\Log\Logger;
+use Monolog\Handler\AbstractProcessingHandler;
+use Monolog\LogRecord;
 use Symfony\Component\Process\Process;
 
-class MacOSSayLogger extends Logger
+class MacOSSayLogger extends AbstractProcessingHandler
 {
     protected function getVoiceForLevel($level)
     {
-        return config('say-logger.voices.' . $level, 'Alex');
+        $levelName = strtolower($level);
+        return config('say-logger.voices.' . $levelName, 'Alex');
     }
 
-    public function log($level, $message, array $context = [])
+    protected function write(LogRecord $record): void
     {
-        parent::log($level, $message, $context);
-
-        if (config('say-logger.enabled')) {
-            $voice = $this->getVoiceForLevel($level);
+        if (config('say-logger.enabled', true)) {
+            $voice = $this->getVoiceForLevel($record->level->getName());
+            $message = $record->message;
+            
+            // Clean up the message for speech
+            $message = strip_tags($message);
+            $message = preg_replace('/\s+/', ' ', $message);
+            
             $process = new Process(['say', '-v', $voice, $message]);
             $process->start();
         }
