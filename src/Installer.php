@@ -85,9 +85,28 @@ class Installer
     private static function sayWelcome(): void
     {
         try {
-            $message = "Say Logger installed successfully! Your log messages will now be spoken aloud.";
-            $command = "say -v Alex " . escapeshellarg($message);
+            // A special surprise welcome message with multiple voices
+            $voices = ['Alex', 'Victoria', 'Fred', 'Kathy'];
+            $messages = [
+                'Welcome to the future of debugging!',
+                'Your logs will now sing to you!',
+                'Let the symphony of code begin!',
+                'Say Logger is ready to rock and roll!'
+            ];
+            
+            // Play the messages in sequence with different voices
+            foreach ($messages as $index => $message) {
+                $voice = $voices[$index % count($voices)];
+                $command = "say -v {$voice} -r 200 " . escapeshellarg($message);
+                shell_exec($command);
+                usleep(500000); // Small pause between messages
+            }
+            
+            // Grand finale with a special effect
+            $finaleMessage = "🎉 May your bugs be few and your logs be loud! 🎉";
+            $command = "say -v Cellos -r 150 " . escapeshellarg($finaleMessage);
             shell_exec($command);
+            
         } catch (\Exception $e) {
             // Silently fail if say command doesn't work
         }
