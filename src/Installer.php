@@ -2,28 +2,38 @@
 
 namespace JordanPartridge\LaravelSayLogger;
 
-use Composer\Script\Event;
+// use Composer\Script\Event;
 
 class Installer
 {
     /**
      * Handle the post-install-cmd Composer event
      */
-    public static function install(Event $event): void
+    public static function install($event = null): void
     {
         // Check if we're in a Laravel Zero project
         if (!self::isLaravelZero()) {
             return;
         }
 
-        $io = $event->getIO();
-        $io->write('🔊 Configuring Say Logger for Laravel Zero...');
+        if ($event && method_exists($event, 'getIO')) {
+            $io = $event->getIO();
+            $io->write('🔊 Configuring Say Logger for Laravel Zero...');
+        } else {
+            echo "🔊 Configuring Say Logger for Laravel Zero...\n";
+        }
 
         // Auto-configure Laravel Zero
         self::configureLaravelZero();
 
-        $io->write('✅ Say Logger configured successfully!');
-        $io->write('🎉 Your log messages will now be spoken aloud!');
+        if ($event && method_exists($event, 'getIO')) {
+            $io = $event->getIO();
+            $io->write('✅ Say Logger configured successfully!');
+            $io->write('🎉 Your log messages will now be spoken aloud!');
+        } else {
+            echo "✅ Say Logger configured successfully!\n";
+            echo "🎉 Your log messages will now be spoken aloud!\n";
+        }
         
         // Speak the welcome message
         self::sayWelcome();
