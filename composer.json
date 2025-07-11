@@ -3,7 +3,7 @@
     "description": "A Laravel package that speaks your log messages using macOS text-to-speech with different voices for different log levels",
     "type": "library",
     "license": "MIT",
-    "keywords": ["laravel", "logging", "text-to-speech", "macos", "say", "audio", "debugging"],
+    "keywords": ["laravel", "laravel-zero", "logging", "text-to-speech", "macos", "say", "audio", "debugging"],
     "authors": [
         {
             "name": "Jordan Partridge",
