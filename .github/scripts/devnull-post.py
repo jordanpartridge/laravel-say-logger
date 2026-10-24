@@ -308,7 +308,20 @@ def main():
     sections = [patch_notes(commits, prs), tests(sha) if sha else ("Tests:", []), acceptance(prs), rev, chg,
                 local_pipeline(sha, prs) if sha else ("Local pipeline:", [])]
     head = f"{NAME} {TAG}: {clean(PITCH, 400)}" if PITCH else f"{NAME} {TAG}"
-    tail = "\n".join(x for x in [f"composer require {PACKAGE}" if PACKAGE else "", URL] if x)
+    # Fixed machine-readable footer. Kept whole when the post is trimmed.
+    # repo: {repo}
+    # version: {tag}
+    # commit: {full_sha}
+    # {release_or_commit_url}
+    link = URL or (f"https://github.com/{REPO}/commit/{sha}" if sha else "")
+    footer = "\n".join(line for line in (
+        f"repo: {REPO}",
+        f"version: {TAG}",
+        f"commit: {sha}" if sha else "commit:",
+        link,
+    ) if line)
+    install = f"composer require {PACKAGE}" if PACKAGE else ""
+    tail = "\n\n".join(x for x in [install, footer] if x)
     # trim lowest priority first: changed in review, local pipeline, reviews, AC, tests, patch notes
     order = [4, 5, 3, 2, 1, 0]
     for idx in order:
@@ -319,7 +332,15 @@ def main():
             main.dropped = {**getattr(main, "dropped", {}), idx: dropped}
             ls = ls[:-1]
             sections[idx] = (title, ls + ([f"- (+{dropped} more)"] if ls else []))
-    print(render(sections, head, tail)[:LIMIT])
+    post = render(sections, head, tail)
+    if len(post) > LIMIT and footer and post.endswith(footer):
+        room = LIMIT - len(footer) - 2
+        body = post[: -len(footer)].rstrip()
+        body = body[:room].rstrip() if room > 0 else ""
+        post = f"{body}\n\n{footer}" if body else footer[:LIMIT]
+    elif len(post) > LIMIT:
+        post = post[:LIMIT]
+    print(post)
 
 
 if __name__ == "__main__":
