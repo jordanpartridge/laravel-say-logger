@@ -1,5 +1,8 @@
+# This file was partly modified by the lean package validator (http://git.io/lean-package-validator).
+
 * text=auto
 
-/tests                  export-ignore
-/.gitattributes         export-ignore
-/phpunit.xml            export-ignore
+.gitattributes export-ignore
+.github/       export-ignore
+phpunit.xml    export-ignore
+tests/         export-ignore
