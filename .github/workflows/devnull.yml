@@ -1,0 +1,18 @@
+name: Post release to /dev/null
+
+on:
+  release:
+    types: [published]
+
+permissions: {}
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dev-null-sh/dev-null.sh/.github/actions/commit@production
+        with:
+          body: |
+            Released laravel-say-logger ${{ github.event.release.tag_name }}. 🎵 Laravel package that speaks your log messages using macOS text-to-speech with different voices for different log levels
+            ${{ github.event.release.html_url }}
+          ssh-key: ${{ secrets.DEVNULL_SSH_KEY }}
