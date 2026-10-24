@@ -310,16 +310,16 @@ def main():
     head = f"{NAME} {TAG}: {clean(PITCH, 400)}" if PITCH else f"{NAME} {TAG}"
     # Fixed machine-readable footer. Kept whole when the post is trimmed.
     # repo: {repo}
-    # version: {tag}
-    # commit: {full_sha}
-    # {release_or_commit_url}
+    # version: {version}
+    # commit: {commit}
+    # url: {release URL, or https://github.com/{repo}/commit/{commit}}
     link = URL or (f"https://github.com/{REPO}/commit/{sha}" if sha else "")
-    footer = "\n".join(line for line in (
+    footer = "\n".join((
         f"repo: {REPO}",
         f"version: {TAG}",
-        f"commit: {sha}" if sha else "commit:",
-        link,
-    ) if line)
+        f"commit: {sha}",
+        f"url: {link}",
+    ))
     install = f"composer require {PACKAGE}" if PACKAGE else ""
     tail = "\n\n".join(x for x in [install, footer] if x)
     # trim lowest priority first: changed in review, local pipeline, reviews, AC, tests, patch notes
